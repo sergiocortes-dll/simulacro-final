@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentación EduTrack - Sistema de Gestión Académica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+        }
+        .code-block {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        .tech-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 15px;
+            font-size: 0.9em;
+        }
+        .architecture-diagram {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .layer-box {
+            border: 2px solid #007bff;
+            padding: 20px;
+            margin: 10px 0;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+        }
+        .endpoint-example {
+            background-color: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-4 fw-bold">EduTrack</h1>
+                    <p class="lead">Sistema de Gestión Académica con .NET 9, Entity Framework y MySQL</p>
+                    <p>Arquitectura DDD simple y API REST para principiantes en C#</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="bi bi-mortarboard fs-1"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="container my-5">
+        
+        <!-- Introducción -->
+        <section class="mb-5">
+            <h2 class="mb-4">🎯 Introducción</h2>
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">
+                        EduTrack es un sistema de gestión académica completo diseñado para estudiantes que están aprendiendo C# 
+                        y desean comprender cómo construir aplicaciones web usando las mejores prácticas de la industria.
+                    </p>
+                    <p class="card-text">
+                        Este proyecto implementa una arquitectura limpia con Domain-Driven Design (DDD) simplificado, 
+                        separando responsabilidades en diferentes capas y utilizando patrones como Repository y Service.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tecnologías Utilizadas -->
+        <section class="mb-5">
+            <h2 class="mb-4">🛠️ Tecnologías Utilizadas</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Backend</h4>
+                    <div class="tech-badge">.NET 9</div>
+                    <div class="tech-badge">Entity Framework Core</div>
+                    <div class="tech-badge">MySQL</div>
+                    <div class="tech-badge">ASP.NET Core Web API</div>
+                    <div class="tech-badge">ASP.NET Core MVC</div>
+                    <div class="tech-badge">Dependency Injection</div>
+                </div>
+                <div class="col-md-6">
+                    <h4>Frontend</h4>
+                    <div class="tech-badge">Bootstrap 5</div>
+                    <div class="tech-badge">jQuery</div>
+                    <div class="tech-badge">DataTables</div>
+                    <div class="tech-badge">Bootstrap Icons</div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <h4>Herramientas de Desarrollo</h4>
+                    <div class="tech-badge">Docker</div>
+                    <div class="tech-badge">Docker Compose</div>
+                    <div class="tech-badge">Swagger/OpenAPI</div>
+                    <div class="tech-badge">xUnit</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arquitectura del Proyecto -->
+        <section class="mb-5">
+            <h2 class="mb-4">🏗️ Arquitectura del Proyecto</h2>
+            
+            <div class="architecture-diagram">
+                <h4>Arquitectura en Capas (DDD Simplificado)</h4>
+                
+                <div class="layer-box">
+                    <h5>🌐 Capa de Presentación</h5>
+                    <p><strong>WebAPI:</strong> Controllers REST para el portal de estudiantes</p>
+                    <p><strong>Web:</strong> MVC con vistas Razor para administradores</p>
+                </div>
+                
+                <div class="layer-box">
+                    <h5>⚙️ Capa de Aplicación</h5>
+                    <p><strong>Services:</strong> Lógica de aplicación y coordinación entre dominio e infraestructura</p>
+                    <p><strong>DTOs:</strong> Objetos de transferencia de datos (para futuras implementaciones)</p>
+                </div>
+                
+                <div class="layer-box">
+                    <h5>💎 Capa de Dominio</h5>
+                    <p><strong>Entities:</strong> Estudiante, ProgramaAcademico, Modalidad</p>
+                    <p><strong>Repositories:</strong> Interfaces para acceso a datos</p>
+                    <p><strong>Business Rules:</strong> Validaciones y lógica de negocio</p>
+                </div>
+                
+                <div class="layer-box">
+                    <h5>🔧 Capa de Infraestructura</h5>
+                    <p><strong>Data:</strong> DbContext de Entity Framework</p>
+                    <p><strong>Repositories:</strong> Implementación concreta de los repositorios</p>
+                    <p><strong>External Services:</strong> Integraciones con servicios externos</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Estructura del Proyecto -->
+        <section class="mb-5">
+            <h2 class="mb-4">📁 Estructura del Proyecto</h2>
+            <div class="code-block">
+EduTrack/
+├── src/
+│   ├── Domain/                    # Capa de dominio
+│   │   ├── Entities/              # Entidades del negocio
+│   │   └── Repositories/          # Interfaces de repositorios
+│   ├── Application/               # Capa de aplicación
+│   │   └── Services/              # Servicios de aplicación
+│   ├── Infrastructure/            # Capa de infraestructura
+│   │   ├── Data/                  # DbContext y configuraciones
+│   │   └── Repositories/          # Implementaciones de repositorios
+│   ├── WebAPI/                    # API REST
+│   │   ├── Controllers/           # Controladores API
+│   │   └── Program.cs             # Punto de entrada
+│   └── EduTrack.Web/              # Aplicación Web MVC
+│       ├── Controllers/           # Controladores MVC
+│       ├── Views/                 # Vistas Razor
+│       └── Program.cs             # Punto de entrada
+├── tests/
+│   ├── Domain.Tests/              # Pruebas del dominio
+│   └── Application.Tests/         # Pruebas de aplicación
+├── docker-compose.yml             # Orquestación con Docker
+├── Dockerfile                     # Imagen Docker
+└── EduTrack.sln                   # Solución Visual Studio
+            </div>
+        </section>
+
+        <!-- Modelo de Datos -->
+        <section class="mb-5">
+            <h2 class="mb-4">📊 Modelo de Datos</h2>
+            
+            <h4>Entidades Principales</h4>
+            
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Estudiante</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><strong>Id:</strong> Identificador único</li>
+                                <li><strong>Nombre:</strong> Nombre del estudiante</li>
+                                <li><strong>Apellido:</strong> Apellido del estudiante</li>
+                                <li><strong>Email:</strong> Correo electrónico</li>
+                                <li><strong>Documento:</strong> Número de identificación</li>
+                                <li><strong>Estado:</strong> Activo, Inactivo, Graduado</li>
+                                <li><strong>SemestreActual:</strong> Semestre cursando</li>
+                                <li><strong>ProgramaAcademicoId:</strong> FK al programa</li>
+                                <li><strong>ModalidadId:</strong> FK a la modalidad</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">ProgramaAcademico</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><strong>Id:</strong> Identificador único</li>
+                                <li><strong>Nombre:</strong> Nombre del programa</li>
+                                <li><strong>Codigo:</strong> Código único</li>
+                                <li><strong>Descripcion:</strong> Descripción detallada</li>
+                                <li><strong>DuracionSemestres:</strong> Duración en semestres</li>
+                                <li><strong>Nivel:</strong> Técnico, Profesional, Maestría</li>
+                                <li><strong>Activo:</strong> Estado del programa</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0">Modalidad</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                <li><strong>Id:</strong> Identificador único</li>
+                                <li><strong>Nombre:</strong> Presencial, Virtual, Híbrida</li>
+                                <li><strong>Descripcion:</strong> Descripción de la modalidad</li>
+                                <li><strong>Activa:</strong> Estado de la modalidad</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API REST Endpoints -->
+        <section class="mb-5">
+            <h2 class="mb-4">🔌 API REST Endpoints</h2>
+            
+            <h4>Endpoints Públicos (Sin Autenticación)</h4>
+            
+            <div class="endpoint-example">
+                <h5>GET /api/programas</h5>
+                <p>Obtiene todos los programas académicos disponibles</p>
+                <div class="code-block">
+GET https://localhost:5001/api/programas
+
+Response:
+[
+  {
+    "id": 1,
+    "nombre": "Ingeniería de Software",
+    "codigo": "IS-001",
+    "descripcion": "Programa de ingeniería enfocado en desarrollo de software",
+    "duracionSemestres": 10,
+    "nivel": "Profesional",
+    "activo": true
+  }
+]
+                </div>
+            </div>
+            
+            <div class="endpoint-example">
+                <h5>POST /api/estudiantes/register</h5>
+                <p>Registro de nuevos estudiantes (autoregistro)</p>
+                <div class="code-block">
+POST https://localhost:5001/api/estudiantes/register
+Content-Type: application/json
+
+{
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "email": "juan.perez@email.com",
+  "documento": "123456789",
+  "programaAcademicoId": 1,
+  "modalidadId": 1
+}
+                </div>
+            </div>
+            
+            <h4 class="mt-4">Endpoints de Administrador (Requieren Autenticación)</h4>
+            
+            <div class="endpoint-example">
+                <h5>GET /api/estudiantes</h5>
+                <p>Obtiene todos los estudiantes (solo administradores)</p>
+            </div>
+            
+            <div class="endpoint-example">
+                <h5>GET /api/estudiantes/{id}</h5>
+                <p>Obtiene un estudiante específico</p>
+            </div>
+            
+            <div class="endpoint-example">
+                <h5>POST /api/estudiantes</h5>
+                <p>Crea un nuevo estudiante</p>
+            </div>
+            
+            <div class="endpoint-example">
+                <h5>PUT /api/estudiantes/{id}</h5>
+                <p>Actualiza un estudiante existente</p>
+            </div>
+            
+            <div class="endpoint-example">
+                <h5>DELETE /api/estudiantes/{id}</h5>
+                <p>Elimina un estudiante</p>
+            </div>
+            
+            <div class="endpoint-example">
+                <h5>GET /api/dashboard/metricas</h5>
+                <p>Obtiene métricas para el dashboard</p>
+                <div class="code-block">
+{
+  "totalEstudiantes": 150,
+  "estudiantesActivos": 120,
+  "estudiantesPresencial": 80,
+  "estudiantesVirtual": 40,
+  "porcentajeActivos": 80
+}
+                </div>
+            </div>
+        </section>
+
+        <!-- Instrucciones de Instalación -->
+        <section class="mb-5">
+            <h2 class="mb-4">🚀 Instrucciones de Instalación</h2>
+            
+            <h4>Requisitos Previos</h4>
+            <ul>
+                <li>.NET 9 SDK</li>
+                <li>MySQL Server 8.0 o superior</li>
+                <li>Docker Desktop (opcional)</li>
+                <li>Visual Studio 2022 o Visual Studio Code</li>
+            </ul>
+            
+            <h4>Opción 1: Ejecución Local</h4>
+            <div class="code-block">
+# 1. Clonar el repositorio
+git clone [URL_DEL_REPOSITORIO]
+cd EduTrack
+
+# 2. Configurar la conexión a MySQL
+# Editar appsettings.json en WebAPI y Web
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Database=edutrack_db;User=root;Password=tu_password;"
+  }
+}
+
+# 3. Restaurar paquetes NuGet
+dotnet restore
+
+# 4. Ejecutar migraciones (si es necesario)
+dotnet ef database update --project src/Infrastructure
+
+# 5. Ejecutar la aplicación
+# API REST
+dotnet run --project src/WebAPI/EduTrack.WebAPI.csproj
+
+# Aplicación Web (en otra terminal)
+dotnet run --project src/EduTrack.Web/EduTrack.Web.csproj
+            </div>
+            
+            <h4>Opción 2: Ejecución con Docker</h4>
+            <div class="code-block">
+# 1. Construir y ejecutar con Docker Compose
+docker-compose up --build
+
+# La aplicación estará disponible en:
+# - API REST: http://localhost:8080
+# - MySQL: localhost:3306
+# - Swagger UI: http://localhost:8080/swagger
+            </div>
+        </section>
+
+        <!-- Uso de la Aplicación -->
+        <section class="mb-5">
+            <h2 class="mb-4">📱 Uso de la Aplicación</h2>
+            
+            <h4>Para Administradores</h4>
+            <ol>
+                <li>Acceder a la aplicación web en <code>http://localhost:5000</code></li>
+                <li>Navegar por el dashboard para ver métricas</li>
+                <li>Gestionar estudiantes (CRUD completo)</li>
+                <li>Ver reportes y estadísticas</li>
+                <li>Usar la consulta con IA para obtener respuestas rápidas</li>
+            </ol>
+            
+            <h4>Para Estudiantes (API REST)</h4>
+            <ol>
+                <li>Consultar programas disponibles: <code>GET /api/programas</code></li>
+                <li>Registrarse como nuevo estudiante: <code>POST /api/estudiantes/register</code></li>
+                <li>Consultar información personal (con autenticación)</li>
+            </ol>
+            
+            <h4>Pruebas con Swagger</h4>
+            <p>La API incluye documentación Swagger que puedes acceder en:</p>
+            <div class="code-block">
+# API REST Swagger UI
+http://localhost:5001/swagger
+            </div>
+        </section>
+
+        <!-- Conceptos Aprendidos -->
+        <section class="mb-5">
+            <h2 class="mb-4">🎓 Conceptos Clave para Aprender</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="card-title mb-0">Patrones de Diseño</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li><strong>Repository Pattern:</strong> Abstrae el acceso a datos</li>
+                                <li><strong>Service Layer:</strong> Lógica de aplicación centralizada</li>
+                                <li><strong>Dependency Injection:</strong> Inversión de control</li>
+                                <li><strong>DTOs:</strong> Transferencia de datos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="card-title mb-0">Principios SOLID</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul>
+                                <li><strong>Single Responsibility:</strong> Una clase, una responsabilidad</li>
+                                <li><strong>Open/Closed:</strong> Abierto a extensión, cerrado a modificación</li>
+                                <li><strong>Liskov Substitution:</strong> Sustitución de objetos</li>
+                                <li><strong>Interface Segregation:</strong> Interfaces específicas</li>
+                                <li><strong>Dependency Inversion:</strong> Depender de abstracciones</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h5 class="card-title mb-0">Mejores Prácticas Implementadas</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <h6>Arquitectura</h6>
+                                    <ul>
+                                        <li>Separación de capas</li>
+                                        <li>DDD simplificado</li>
+                                        <li>Inyección de dependencias</li>
+                                        <li>Configuración por ambientes</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>API REST</h6>
+                                    <ul>
+                                        <li>Endpoints consistentes</li>
+                                        <li>Códigos HTTP apropiados</li>
+                                        <li>Documentación Swagger</li>
+                                        <li>Validación de datos</li>
+                                    </ul>
+                                </div>
+                                <div class="col-md-4">
+                                    <h6>Seguridad</h6>
+                                    <ul>
+                                        <li>Autenticación básica</li>
+                                        <li>Autorización por roles</li>
+                                        <li>Validación de entrada</li>
+                                        <li>HTTPS por defecto</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Próximos Pasos -->
+        <section class="mb-5">
+            <h2 class="mb-4">🚀 Próximos Pasos y Mejoras</h2>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h4>Funcionalidades Pendientes</h4>
+                    <ul>
+                        <li><strong>Autenticación JWT:</strong> Implementar tokens para la API</li>
+                        <li><strong>Importación Excel:</strong> Cargar estudiantes masivamente</li>
+                        <li><strong>Generación PDF:</strong> Reportes de estudiantes</li>
+                        <li><strong>Integración IA Real:</strong> Conectar con OpenAI, Gemini o similar</li>
+                        <li><strong>Notificaciones Email:</strong> Envío de correos para registro</li>
+                        <li><strong>Cache:</strong> Implementar Redis para mejorar performance</li>
+                        <li><strong>Logging:</strong> Configurar Serilog para logs estructurados</li>
+                        <li><strong>Monitoring:</strong> Agregar health checks y métricas</li>
+                    </ul>
+                    
+                    <h4 class="mt-4">Mejoras de Código</h4>
+                    <ul>
+                        <li><strong>Async/Await:</strong> Optimizar operaciones asíncronas</li>
+                        <li><strong>Validaciones:</strong> Usar FluentValidation</li>
+                        <li><strong>Mapper:</strong> Implementar AutoMapper</li>
+                        <li><strong>CQRS:</strong> Separar comandos y consultas</li>
+                        <li><strong>Eventos:</strong> Implementar Domain Events</li>
+                        <li><strong>Testing:</strong> Aumentar cobertura de pruebas</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Recursos Adicionales -->
+        <section class="mb-5">
+            <h2 class="mb-4">📚 Recursos Adicionales</h2>
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Documentación Oficial</h4>
+                    <ul>
+                        <li><a href="https://docs.microsoft.com/en-us/aspnet/core/" target="_blank">ASP.NET Core Documentation</a></li>
+                        <li><a href="https://docs.microsoft.com/en-us/ef/core/" target="_blank">Entity Framework Core</a></li>
+                        <li><a href="https://docs.microsoft.com/en-us/dotnet/csharp/" target="_blank">C# Guide</a></li>
+                        <li><a href="https://docs.docker.com/" target="_blank">Docker Documentation</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-md-6">
+                    <h4>Tutoriales y Cursos</h4>
+                    <ul>
+                        <li><a href="https://dotnet.microsoft.com/en-us/learn/aspnet" target="_blank">.NET Learning Path</a></li>
+                        <li><a href="https://www.pluralsight.com/paths/dotnet-core" target="_blank">Pluralsight .NET Path</a></li>
+                        <li><a href="https://www.youtube.com/c/IAmTimCorey" target="_blank">IAmTimCorey YouTube</a></li>
+                        <li><a href="https://www.udemy.com/courses/search/?q=asp.net%20core" target="_blank">Udemy ASP.NET Courses</a></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conclusión -->
+        <section class="mb-5">
+            <h2 class="mb-4">✨ Conclusión</h2>
+            
+            <div class="card bg-light">
+                <div class="card-body">
+                    <p class="card-text">
+                        Este proyecto EduTrack representa una introducción práctica al desarrollo de aplicaciones web 
+                        empresariales con .NET. Aunque está simplificado para principiantes, implementa patrones y 
+                        prácticas reales que se utilizan en la industria.
+                    </p>
+                    <p class="card-text">
+                        El código está diseñado para ser fácilmente extensible y modificar, permitiendo a los estudiantes 
+                        experimentar con diferentes características y mejorar gradualmente sus habilidades de desarrollo.
+                    </p>
+                    <p class="card-text">
+                        <strong>¡Recuerda:</strong> La mejor manera de aprender es practicando. No tengas miedo de 
+                        experimentar, romper cosas y arreglarlas. ¡Cada error es una oportunidad de aprendizaje!
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>EduTrack</h5>
+                    <p>Sistema de Gestión Académica - Proyecto Educativo .NET</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p>© 2024 EduTrack. Proyecto educativo para aprendizaje de C# y .NET</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
