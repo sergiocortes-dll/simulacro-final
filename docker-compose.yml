@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: edutrack-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: EduTrackDB
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init-db:/docker-entrypoint-initdb.d
+    networks:
+      - edutrack-network
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -ppassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+      start_period: 20s
+
+  edutrack-api:
+    build:
+      context: .
+      dockerfile: Dockerfile-api
+    container_name: edutrack-api
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Server=mysql;Database=EduTrackDB;User=root;Password=password;"
+      Jwt__Key: "clave-secreta-muy-larga-para-desarrollo-de-edutrack-2024-docker"
+    ports:
+      - "5000:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - edutrack-network
+
+  edutrack-web:
+    build:
+      context: .
+      dockerfile: Dockerfile-web
+    container_name: edutrack-web
+    restart: always
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: "Server=mysql;Database=EduTrackDB;User=root;Password=password;"
+      Jwt__Key: "clave-secreta-muy-larga-para-desarrollo-de-edutrack-2024-docker"
+    ports:
+      - "5001:80"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      edutrack-api:
+        condition: service_started
+    networks:
+      - edutrack-network
+
+volumes:
+  mysql_data:
+
+networks:
+  edutrack-network:
+    driver: bridge

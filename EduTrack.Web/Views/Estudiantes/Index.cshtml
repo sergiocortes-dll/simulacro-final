@@ -1,0 +1,151 @@
+@model List<EduTrack.Core.Dtos.EstudianteDto>
+@{
+    ViewData["Title"] = "Gestión de Estudiantes";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-6">
+                <i class="fas fa-users"></i> Gestión de Estudiantes
+            </h1>
+            <p class="text-muted">Administra la información de los estudiantes de EduTrack S.A.S.</p>
+        </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <a asp-action="Crear" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Nuevo Estudiante
+            </a>
+        </div>
+        <div class="col-md-6 text-end">
+            <button class="btn btn-success" onclick="descargarTemplate()">
+                <i class="fas fa-download"></i> Descargar Template Excel
+            </button>
+            <button class="btn btn-info" data-bs-toggle="modal" data-bs-target="#importarModal">
+                <i class="fas fa-upload"></i> Importar Excel
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabla de estudiantes -->
+    <div class="card shadow">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="fas fa-table"></i> Lista de Estudiantes
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover" id="tablaEstudiantes">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Documento</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Programa</th>
+                            <th>Modalidad</th>
+                            <th>Estado</th>
+                            <th>Semestre</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var estudiante in Model)
+                        {
+                            <tr>
+                                <td>@estudiante.Id</td>
+                                <td>@estudiante.NumeroDocumento</td>
+                                <td>@estudiante.Nombre @estudiante.Apellido</td>
+                                <td>@estudiante.Email</td>
+                                <td>@estudiante.ProgramaAcademico</td>
+                                <td>@estudiante.Modalidad</td>
+                                <td>
+                                    <span class="badge @(estudiante.Estado == "Activo" ? "bg-success" : "bg-secondary")">
+                                        @estudiante.Estado
+                                    </span>
+                                </td>
+                                <td>@estudiante.SemestreActual</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Editar" asp-route-id="@estudiante.Id" 
+                                           class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="DescargarHojaAcademica" asp-route-id="@estudiante.Id" 
+                                           class="btn btn-sm btn-info" title="Descargar PDF" target="_blank">
+                                            <i class="fas fa-file-pdf"></i>
+                                        </a>
+                                        <form asp-action="Eliminar" asp-route-id="@estudiante.Id" method="post" 
+                                              class="d-inline" onsubmit="return confirmarEliminacion()">
+                                            <button type="submit" class="btn btn-sm btn-danger" title="Eliminar">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de importación -->
+<div class="modal fade" id="importarModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-upload"></i> Importar Estudiantes desde Excel
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="ImportarExcel" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="archivoExcel" class="form-label">Seleccione el archivo Excel:</label>
+                        <input type="file" class="form-control" id="archivoExcel" name="archivoExcel" 
+                               accept=".xlsx,.xls" required>
+                        <div class="form-text">
+                            El archivo debe tener el formato del template descargable.
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload"></i> Importar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#tablaEstudiantes').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+                },
+                order: [[0, 'desc']],
+                responsive: true
+            });
+        });
+
+        function confirmarEliminacion() {
+            return confirm('¿Está seguro de que desea eliminar este estudiante? Esta acción no se puede deshacer.');
+        }
+
+        function descargarTemplate() {
+            window.location.href = '@Url.Action("DescargarTemplateExcel")';
+        }
+    </script>
+}

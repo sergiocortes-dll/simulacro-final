@@ -1,0 +1,172 @@
+@model List<EduTrack.Core.Dtos.DashboardCardDto>
+@{
+    ViewData["Title"] = "Dashboard - EduTrack";
+}
+
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-4">
+                <i class="fas fa-tachometer-alt"></i> Dashboard EduTrack
+            </h1>
+            <p class="lead">Panel de control con inteligencia artificial para la gestión académica</p>
+        </div>
+    </div>
+
+    <!-- Tarjetas de estadísticas -->
+    <div class="row mb-4">
+        @foreach (var tarjeta in Model)
+        {
+            <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-primary shadow h-100 py-2 @tarjeta.Color text-white">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                    @tarjeta.Titulo
+                                </div>
+                                <div class="h5 mb-0 font-weight-bold">@tarjeta.Valor</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="@tarjeta.Icono fa-2x opacity-75"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Consulta IA -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-robot"></i> Asistente de Inteligencia Artificial
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="preguntaIA" class="form-label">Haz una pregunta sobre los datos de los estudiantes:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="preguntaIA" 
+                                   placeholder="Ej: ¿Cuántos estudiantes están en modalidad virtual?">
+                            <button class="btn btn-primary" type="button" onclick="consultarIA()">
+                                <i class="fas fa-paper-plane"></i> Consultar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="respuestaIA" class="alert alert-info" style="display: none;">
+                        <i class="fas fa-robot"></i>
+                        <strong>Respuesta:</strong>
+                        <div id="textoRespuesta"></div>
+                    </div>
+
+                    <hr>
+                    
+                    <h6 class="text-muted">Ejemplos de preguntas que puedes hacer:</h6>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-question-circle text-primary"></i> ¿Cuántos estudiantes hay en total?</li>
+                        <li><i class="fas fa-question-circle text-primary"></i> ¿Cuántos estudiantes están activos?</li>
+                        <li><i class="fas fa-question-circle text-primary"></i> ¿Cuántos estudiantes están en modalidad presencial?</li>
+                        <li><i class="fas fa-question-circle text-primary"></i> ¿Cuántos estudiantes hay por programa?</li>
+                        <li><i class="fas fa-question-circle text-primary"></i> ¿Cuántos estudiantes hay por semestre?</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos rápidos -->
+        <div class="col-lg-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">
+                        <i class="fas fa-chart-pie"></i> Estadísticas Rápidas
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height:300px;">
+                        <canvas id="graficoModalidades"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        async function consultarIA() {
+            const pregunta = document.getElementById('preguntaIA').value;
+            if (!pregunta.trim()) {
+                alert('Por favor ingrese una pregunta');
+                return;
+            }
+
+            const respuestaDiv = document.getElementById('respuestaIA');
+            const textoRespuesta = document.getElementById('textoRespuesta');
+            
+            respuestaDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/Dashboard/ConsultarIA', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'pregunta=' + encodeURIComponent(pregunta)
+                });
+
+                const data = await response.json();
+                
+                if (data.exito) {
+                    textoRespuesta.innerHTML = data.respuesta.replace(/\n/g, '<br>');
+                    respuestaDiv.style.display = 'block';
+                } else {
+                    alert(data.mensaje || 'Error en la consulta');
+                }
+            } catch (error) {
+                alert('Error de conexión: ' + error.message);
+            }
+        }
+
+        // Detectar Enter en el campo de texto
+        document.getElementById('preguntaIA').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                consultarIA();
+            }
+        });
+
+        // Inicializar gráfico de modalidades (simulado)
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('graficoModalidades').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Presencial', 'Virtual', 'Mixta'],
+                    datasets: [{
+                        data: [120, 85, 35],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.8)',
+                            'rgba(255, 206, 86, 0.8)',
+                            'rgba(75, 192, 192, 0.8)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+}

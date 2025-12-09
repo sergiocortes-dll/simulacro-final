@@ -1,0 +1,29 @@
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+EXPOSE 80
+
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+
+# Copiar archivos de proyecto
+COPY ["EduTrack.Core/EduTrack.Core.csproj", "EduTrack.Core/"]
+COPY ["EduTrack.Infrastructure/EduTrack.Infrastructure.csproj", "EduTrack.Infrastructure/"]
+COPY ["EduTrack.API/EduTrack.API.csproj", "EduTrack.API/"]
+
+# Restaurar paquetes
+RUN dotnet restore "EduTrack.API/EduTrack.API.csproj"
+
+# Copiar código fuente
+COPY . .
+
+# Compilar
+WORKDIR "/src/EduTrack.API"
+RUN dotnet build "EduTrack.API.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "EduTrack.API.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "EduTrack.API.dll"]
