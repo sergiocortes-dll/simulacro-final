@@ -16,4 +16,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EduTrack.Application\EduTrack.Application.csproj" />
+  </ItemGroup>
+
 </Project>

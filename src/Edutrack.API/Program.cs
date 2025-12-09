@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using Edutrack.API.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 
@@ -110,6 +111,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 // TODO: Custom Middlewares
+app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
 
 app.MapControllers();
 
