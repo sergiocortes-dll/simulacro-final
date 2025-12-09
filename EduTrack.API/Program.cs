@@ -115,15 +115,15 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configuración del pipeline HTTP
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "EduTrack API v1");
         c.RoutePrefix = string.Empty; // Swagger en la raíz
     });
-}
+//}
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");

@@ -12,15 +12,14 @@ services:
       - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./init-db:/docker-entrypoint-initdb.d
     networks:
       - edutrack-network
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -ppassword"]
-      interval: 5s
-      timeout: 5s
-      retries: 15
-      start_period: 20s
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-ppassword"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+      start_period: 30s
 
   edutrack-api:
     build:
@@ -33,12 +32,18 @@ services:
       ConnectionStrings__DefaultConnection: "Server=mysql;Database=EduTrackDB;User=root;Password=password;"
       Jwt__Key: "clave-secreta-muy-larga-para-desarrollo-de-edutrack-2024-docker"
     ports:
-      - "5000:80"
+      - "5000:8080"
     depends_on:
       mysql:
         condition: service_healthy
     networks:
       - edutrack-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health", "||", "exit", "1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
 
   edutrack-web:
     build:
@@ -51,7 +56,7 @@ services:
       ConnectionStrings__DefaultConnection: "Server=mysql;Database=EduTrackDB;User=root;Password=password;"
       Jwt__Key: "clave-secreta-muy-larga-para-desarrollo-de-edutrack-2024-docker"
     ports:
-      - "5001:80"
+      - "5001:8080"
     depends_on:
       mysql:
         condition: service_healthy
